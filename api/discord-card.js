@@ -23,12 +23,14 @@ export default async function handler(req, res) {
   );
   const member = memberRes.ok ? await memberRes.json() : null;
 
+  /* ---------- RELIABLE presence: whole guild list ---------- */
   const presenceRes = await fetch(
-    `https://discord.com/api/v10/guilds/${guild}/presences/${uid}`,
+    `https://discord.com/api/v10/guilds/${guild}/presences`,   // <- plural
     { headers: { Authorization: `Bot ${token}` } }
   );
-  const presence = presenceRes.ok ? await presenceRes.json() : null;
-  const status = presence?.status ?? 'offline';
+  const list = presenceRes.ok ? await presenceRes.json() : []; // array
+  const entry = list.find(p => p.user.id === uid);
+  const status = entry?.status ?? 'offline';
 
   /* ---------- avatar ---------- */
   const hash = member?.avatar ?? user.avatar;
