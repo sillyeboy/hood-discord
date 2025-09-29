@@ -24,10 +24,11 @@ export default async function handler(req, res) {
   const member = memberRes.ok ? await memberRes.json() : null;
 
   /* ---------- RELIABLE presence: whole guild list ---------- */
-  const presenceRes = await fetch(
-    `https://discord.com/api/v10/guilds/${guild}/presences`,   // <- plural
-    { headers: { Authorization: `Bot ${token}` } }
-  );
+const presenceRes = await fetch(
+  `https://discord.com/api/v10/guilds/${guild}/presences`,
+  { headers: { Authorization: `Bot ${token}` } }
+);
+console.log('guild:', guild, 'status:', presenceRes.status, 'text:', await presenceRes.text());
   const list = presenceRes.ok ? await presenceRes.json() : []; // array
   const entry = list.find(p => p.user.id === uid);
   const status = entry?.status ?? 'offline';
