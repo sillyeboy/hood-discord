@@ -24,4 +24,4 @@ export default async function (req, res) {
     bio: `${user.username}#${user.discriminator}`,
     profileDeepLink: `discord://-/users/${uid}`
   });
-}
+} 
